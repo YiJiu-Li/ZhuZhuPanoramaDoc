@@ -144,6 +144,8 @@
             padding: 0.4rem;
             border-radius: 4px;
             transition: background-color 0.2s;
+            position: relative;
+            /* 添加相对定位 */
         }
 
         .theme-toggle:hover {
@@ -374,6 +376,73 @@
             color: white;
         }
 
+        /* 图片缩放效果 */
+        .img-container img {
+            transition: transform 0.3s ease;
+        }
+
+        .img-container.zoomed {
+            cursor: zoom-out;
+        }
+
+        .img-container.zoomed img {
+            transform: scale(1.5);
+        }
+
+        .zoom-hint {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .img-container:hover .zoom-hint {
+            opacity: 1;
+        }
+
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .fullscreen-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .fullscreen-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .fullscreen-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
         /* 紧凑型界面概述布局样式 Start */
         .interface-section {
             margin-bottom: 1.5rem;
@@ -490,6 +559,130 @@
 
         /* 紧凑型界面概述布局样式 End */
 
+        /* 教程步骤样式  Start */
+        .tutorial-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .tutorial-step {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--content-bg);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .tutorial-step:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            /* 从40px减小到32px */
+            height: 22px;
+            /* 从40px减小到32px */
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1rem;
+            /* 从1.25rem减小到1rem */
+            font-weight: bold;
+            border-radius: 50%;
+            flex-shrink: 0;
+            /* 防止在小屏幕上被压缩 */
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h3 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        /* 特性卡片网格 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--content-bg);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        .feature-content h3 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            color: var(--text-color);
+        }
+
+        /* 图片容器强化 */
+        .img-container {
+            margin: 1.25rem 0;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .img-container img {
+            width: 100%;
+            border: none;
+            display: block;
+        }
+
+        .img-container .caption {
+            padding: 0.75rem;
+            text-align: center;
+            background-color: var(--code-bg);
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .tutorial-step {
+                flex-direction: column;
+            }
+
+            .step-number {
+                margin-bottom: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 教程步骤样式  End */
 
         @keyframes fadeIn {
             from {
@@ -676,6 +869,8 @@
             opacity: 1;
         }
 
+
+        /* 修改工具提示位置，显示在按钮下方而非上方 */
         .tooltip-text {
             visibility: hidden;
             background-color: #333;
@@ -685,7 +880,8 @@
             padding: 5px 10px;
             position: absolute;
             z-index: 1;
-            bottom: 125%;
+            top: 125%;
+            /* 修改为显示在按钮下方 */
             left: 50%;
             transform: translateX(-50%);
             white-space: nowrap;
@@ -694,15 +890,18 @@
             font-size: 0.8rem;
         }
 
+        /* 修改三角箭头的方向，指向上方 */
         .tooltip-text::after {
             content: "";
             position: absolute;
-            top: 100%;
+            bottom: 100%;
+            /* 修改为指向上方 */
             left: 50%;
             margin-left: -5px;
             border-width: 5px;
             border-style: solid;
-            border-color: #333 transparent transparent transparent;
+            border-color: transparent transparent #333 transparent;
+            /* 修改箭头方向 */
         }
 
         /* 优化章节目录样式 - 简洁现代版 */
@@ -1395,44 +1594,160 @@
             <section id="basic-operations" class="section">
                 <h1>基本操作</h1>
 
-                <h2>下载全景图像</h2>
-                <p>下载全景图的基本步骤如下：</p>
-                <ol>
-                    <li>复制您想要下载的全景图像URL（网址）</li>
-                    <li>将URL粘贴到全景下载器的地址栏中</li>
-                    <li>点击"下载"按钮开始下载过程</li>
-                    <li>软件将自动分析URL并开始下载图像块</li>
-                    <li>下载完成后，软件会自动将图像块拼接成完整全景图</li>
-                </ol>
-
-                <div class="note-box info">
-                    <div class="note-title"><span>ℹ️</span> 提示</div>
-                    <p>对于大型全景图像，下载过程可能需要一些时间，请耐心等待。</p>
+                <div class="section-toc">
+                    <p>本章内容:</p>
+                    <ul>
+                        <li><a href="#basic-download-panorama">下载全景图像</a></li>
+                        <li><a href="#basic-status-check">查看下载状态</a></li>
+                        <li><a href="#basic-view-results">查看下载结果</a></li>
+                    </ul>
                 </div>
 
-                <h2>查看下载状态</h2>
-                <p>下载开始后，您可以在任务列表中查看当前下载的状态：</p>
-                <ul>
-                    <li>进度条显示整体下载进度</li>
-                    <li>状态列显示当前下载状态（等待、下载中、已完成、失败等）</li>
-                    <li>可以看到已下载的图块数量和总图块数量</li>
-                </ul>
+                <h2 id="basic-download-panorama">下载全景图像</h2>
+                <p>下载全景图是软件的核心功能，只需几个简单步骤即可完成，下面以建E网来做演示（推荐谷歌浏览器）</p>
 
-                <h2>查看下载结果</h2>
-                <p>下载完成后，您可以：</p>
-                <ul>
-                    <li>点击任务列表中的"打开文件夹"查看保存位置</li>
-                    <li>使用"预览"功能直接在应用内查看下载的图像</li>
-                    <li>如果启用了自动拼接功能，拼接后的完整全景图将保存在同一文件夹中</li>
-                </ul>
+                <div class="tutorial-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>复制全景图URL</h3>
+                        <p>首先，在浏览器中访问包含全景图的网站（如建E网、720Yun等）并打开您想下载的全景页面。确保全景已完全加载，然后从浏览器顶部的地址栏中选择并复制完整的网址链接。</p>
+                        <div class="note-box tip" style="margin: 0.75rem 0;">
+                            <div class="note-title"><span>💡</span> 小提示</div>
+                            <p>使用快捷键 <code>Ctrl+L</code> 快速选中地址栏，然后 <code>Ctrl+C</code> 复制网址。确保复制的是带有完整参数的原始链接，而不是分享短链接。
+                            </p>
+                        </div>
+                        <div class="img-container">
+                            <img src="img/basic-copy-url.png" alt="复制全景图URL">
+                            <p class="caption">从浏览器地址栏选择并复制完整的全景图网址</p>
+                        </div>
+                    </div>
+                </div>
 
-                <h2>取消或暂停下载</h2>
-                <p>如果需要取消或暂停正在进行的下载：</p>
-                <ul>
-                    <li>点击工具栏中的"停止"按钮可以取消当前下载</li>
-                    <li>在任务列表中右键点击任务，选择"暂停"可暂停下载</li>
-                    <li>暂停的任务可以稍后通过右键菜单中的"继续"选项恢复</li>
-                </ul>
+                <div class="tutorial-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>粘贴到软件中</h3>
+                        <p>将复制的链接粘贴到全景下载器的链接输入框中。对于已适配的全景网站，软件会自动识别网站类型并弹出快捷下载面板，同时预设最优参数。您可以勾选"自动解析"或"自动下载"选项，进一步简化操作流程。
+                        </p>
+                        <div class="note-box tip" style="margin: 0.75rem 0;">
+                            <div class="note-title"><span>💡</span> 操作提示</div>
+                            <p>粘贴后软件会自动检测链接有效性，有效链接会以蓝色高亮显示，可直接点击"解析全景"按钮进入下一步。</p>
+                        </div>
+                        <div class="img-container">
+                            <img src="img/basic-paste-url.png" alt="粘贴URL到软件">
+                            <p class="caption">将全景网址粘贴到链接输入框中</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>解析全景链接</h3>
+                        <p>点击"解析全景"按钮，软件将立即开始分析URL并智能识别全景结构，包括场景数量、图层信息和最佳分辨率。解析过程通常只需几秒钟，您可以在状态栏查看进度。</p>
+                        <div class="img-container">
+                            <img src="img/basic-analyze-url.png" alt="解析全景链接">
+                            <p class="caption">点击解析全景按钮开始智能分析链接</p>
+                        </div>
+                        <h3>设置下载参数</h3>
+                        <p>解析成功后，软件会自动为您配置最优参数组合，包括分辨率、图片格式和质量设置。初次使用时建议保留默认配置，熟悉软件后可根据需要调整参数以平衡画质与文件大小。</p>
+                        <div class="note-box tip" style="margin: 0.75rem 0;">
+                            <div class="note-title"><span>💡</span> 专业提示</div>
+                            <p>对于建筑表现或专业摄影用途，建议选择高分辨率和PNG格式保留更多细节；对于网页展示或分享，可选择适中分辨率和JPG格式减小文件体积。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>开始下载</h3>
+                        <p>确认参数设置无误后，点击"开始下载"按钮，软件将立即启动下载流程，自动获取全景图像并进行智能拼接处理。下载进度会实时显示在界面底部的进度条和日志区域。</p>
+                        <div class="img-container">
+                            <img src="img/basic-start-download.png" alt="开始下载全景图">
+                            <p class="caption">点击开始下载按钮启动下载流程，可根据需要设置以下选项：①文件夹自动打开 ②生成全景漫游 ③删除切图 ④日志输出(大文件下载时建议关闭) ⑤无损压缩
+                            </p>
+                        </div>
+                        <div class="note-box info">
+                            <div class="note-title"><span>ℹ️</span> 专业提示</div>
+                            <p>高分辨率全景图下载时间因图像大小和网络环境而异，通常需要几分钟至数十分钟。建议将下载路径设置在固态硬盘上，可显著提高小文件切图的写入速度和整体下载效率。包括合成全景的速度。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <h2 id="basic-status-check">查看下载状态</h2>
+                <p>下载开始后，您可以实时监控下载进度和状态：</p>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-content">
+                            <h3>进度条指示</h3>
+                            <p>进度条直观显示整体下载完成百分比和预计剩余时间。</p>
+                            <div class="img-container">
+                                <img src="img/basic-progress-bar.png" alt="下载进度条">
+                                <p class="caption">进度条显示下载完成百分比</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <div class="feature-content">
+                            <h3>日志实时更新</h3>
+                            <p>详细日志区域显示每个图块的下载状态和处理信息。</p>
+                            <div class="img-container">
+                                <img src="img/basic-log-updates.png" alt="实时日志更新">
+                                <p class="caption">日志区域实时显示下载详情</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🏷️</div>
+                        <div class="feature-content">
+                            <h3>场景标签指示</h3>
+                            <p>多场景全景下载时，标签栏会显示当前正在处理的场景名称。</p>
+                            <div class="img-container">
+                                <img src="img/basic-scene-indicator.png" alt="场景标签指示">
+                                <p class="caption">场景标签指示当前下载的场景</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="basic-view-results">查看下载结果</h2>
+                <p>下载完成后，有多种方式查看您的全景图像：</p>
+
+                <div class="tutorial-steps">
+                    <div class="tutorial-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>自动打开文件夹</h3>
+                            <div class="img-container">
+                                <img src="img/basic-auto-open.png" alt="自动打开文件夹选项">
+                                <p class="caption">下载选项区的位置和效果</p>
+                            </div>
+                            <div class="note-box info" style="margin-top: 0.75rem;">
+                                <div class="note-title"><span>ℹ️</span> 下载设置说明</div>
+                                <p><strong>①打开文件夹</strong> - 下载完成时系统将自动为您打开保存目录，让您无需手动导航即可立即查看和使用下载的全景图像</p>
+                                <p><strong>②生成全景漫游</strong> - 创建可在浏览器中直接查看的交互式HTML5全景体验，支持360°旋转和场景切换</p>
+                                <p><strong>③删除切图</strong> - 下载完成并成功拼接后自动删除原始瓦片图像，节省存储空间（不影响最终全景质量）</p>
+                                <p><strong>④日志输出</strong> - 显示详细下载过程信息，处理大型全景时建议关闭以提升性能和下载速度</p>
+                                <p><strong>⑤无损压缩</strong> - 在不降低画质的前提下减小图像文件体积，平衡存储空间与图像质量</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="note-box info" style="margin-top: 2rem;">
+                    <div class="note-title"><span>ℹ️</span> 小知识</div>
+                    <p>全景下载器的下载引擎采用Aria2c多线程技术，即使在下载大型全景时，也能充分利用您的网络带宽，显著提高下载速度。会适配网站动态调整并发连接数。</p>
+                </div>
 
                 <div class="pagination">
                     <a href="#interface-overview" class="pagination-prev" data-section="interface-overview">界面概述</a>
@@ -2267,33 +2582,49 @@
             // 搜索所有部分的内容
             sections.forEach(section => {
                 const sectionId = section.id;
-                // 修复这里：处理可能没有h1标签的情况
+                // 处理可能没有h1标签的情况
                 let sectionTitle = "未命名章节";
                 const headingElement = section.querySelector('h1') || section.querySelector('h2');
                 if (headingElement) {
                     sectionTitle = headingElement.textContent;
                 }
 
-                const sectionText = section.textContent.toLowerCase();
+                // 从section中获取所有文本节点
+                const textNodes = [];
+                getAllTextNodes(section, textNodes);
 
-                if (sectionText.includes(query)) {
-                    // 查找匹配内容的上下文
-                    const index = sectionText.indexOf(query);
-                    let snippet = sectionText.substring(Math.max(0, index - 30), Math.min(sectionText.length, index + 100));
+                textNodes.forEach((node, index) => {
+                    const nodeText = node.textContent.toLowerCase();
+                    if (nodeText.includes(query)) {
+                        // 为此节点生成唯一ID，用于定位
+                        const nodeId = `search-highlight-${sectionId}-${index}`;
 
-                    // 使开始和结束更自然
-                    if (index > 30) snippet = '...' + snippet;
-                    if (index + 100 < sectionText.length) snippet = snippet + '...';
+                        // 获取匹配内容的上下文
+                        const matchIndex = nodeText.indexOf(query);
+                        let snippet = nodeText.substring(Math.max(0, matchIndex - 30),
+                            Math.min(nodeText.length, matchIndex + 100));
 
-                    // 加亮查询文本
-                    const highlightedSnippet = snippet.replace(new RegExp(query, 'gi'), match => `<span class="highlight">${match}</span>`);
+                        // 使开始和结束更自然
+                        if (matchIndex > 30) snippet = '...' + snippet;
+                        if (matchIndex + 100 < nodeText.length) snippet = snippet + '...';
 
-                    results.push({
-                        id: sectionId,
-                        title: sectionTitle,
-                        snippet: highlightedSnippet
-                    });
-                }
+                        // 加亮查询文本
+                        const highlightedSnippet = snippet.replace(
+                            new RegExp(query, 'gi'),
+                            match => `<span class="highlight">${match}</span>`
+                        );
+
+                        results.push({
+                            id: sectionId,
+                            nodeId: nodeId,
+                            title: sectionTitle,
+                            snippet: highlightedSnippet,
+                            node: node,
+                            matchIndex: matchIndex,
+                            query: query
+                        });
+                    }
+                });
             });
 
             // 显示结果
@@ -2303,13 +2634,12 @@
                     const resultItem = document.createElement('div');
                     resultItem.className = 'search-result-item';
                     resultItem.innerHTML = `
-                        <div class="search-result-title">${result.title}</div>
-                        <div class="search-result-snippet">${result.snippet}</div>
-                    `;
+                <div class="search-result-title">${result.title}</div>
+                <div class="search-result-snippet">${result.snippet}</div>
+            `;
                     resultItem.addEventListener('click', () => {
                         // 导航到结果部分
-                        window.location.hash = result.id;
-                        loadFromHash();
+                        navigateToSearchResult(result);
                         searchResults.style.display = 'none';
                         searchInput.value = '';
                     });
@@ -2321,7 +2651,114 @@
                 searchResults.style.display = 'block';
             }
         }
+        // 获取元素内所有文本节点
+        function getAllTextNodes(element, result) {
+            if (element.nodeType === Node.TEXT_NODE && element.textContent.trim() !== '') {
+                result.push(element);
+            } else {
+                for (let i = 0; i < element.childNodes.length; i++) {
+                    getAllTextNodes(element.childNodes[i], result);
+                }
+            }
+        }
 
+        // 导航到搜索结果
+        function navigateToSearchResult(result) {
+            // 首先切换到正确的章节
+            navLinks.forEach(el => el.classList.remove('active'));
+            document.querySelector(`[data-section="${result.id}"]`).classList.add('active');
+
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(result.id).classList.add('active');
+
+            // 更新URL哈希
+            window.location.hash = result.id;
+
+            // 清除之前的高亮
+            clearSearchHighlights();
+
+            // 创建高亮标记
+            const highlightedText = document.createElement('span');
+            highlightedText.className = 'search-text-highlight';
+            highlightedText.textContent = result.node.textContent.substr(result.matchIndex, result.query.length);
+            highlightedText.id = result.nodeId;
+
+            // 使高亮可点击，点击时移除高亮
+            highlightedText.style.cursor = 'pointer';
+            highlightedText.addEventListener('click', clearSearchHighlights);
+
+            // 替换原文本节点为三个节点：前文本、高亮文本、后文本
+            const beforeText = document.createTextNode(
+                result.node.textContent.substring(0, result.matchIndex)
+            );
+            const afterText = document.createTextNode(
+                result.node.textContent.substring(result.matchIndex + result.query.length)
+            );
+
+            const parent = result.node.parentNode;
+            parent.replaceChild(afterText, result.node);
+            parent.insertBefore(highlightedText, afterText);
+            parent.insertBefore(beforeText, highlightedText);
+
+            // 滚动到高亮位置
+            setTimeout(() => {
+                const highlightElement = document.getElementById(result.nodeId);
+                if (highlightElement) {
+                    highlightElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 10);
+
+            // 添加滚动和点击监听器，在用户继续浏览时清除高亮
+            // const scrollHandler = () => {
+            //     clearSearchHighlights();
+            //     window.removeEventListener('scroll', scrollHandler);
+            // };
+
+            // window.addEventListener('scroll', scrollHandler);
+
+            // 延迟添加点击监听器，避免立即触发
+            setTimeout(() => {
+                const clickHandler = (e) => {
+                    if (!e.target.classList.contains('search-text-highlight') &&
+                        !searchInput.contains(e.target) &&
+                        !searchResults.contains(e.target)) {
+                        clearSearchHighlights();
+                        document.removeEventListener('click', clickHandler);
+                    }
+                };
+                document.addEventListener('click', clickHandler);
+            }, 500);
+        }
+        // 清除搜索高亮的辅助函数
+        function clearSearchHighlights() {
+            document.querySelectorAll('.search-text-highlight').forEach(el => {
+                if (el && el.parentNode) {
+                    const parent = el.parentNode;
+                    const textNode = document.createTextNode(el.textContent);
+                    parent.replaceChild(textNode, el);
+                }
+            });
+        }
+        // 添加搜索结果高亮样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .search-text-highlight {
+                background-color: #ffff00;
+                color: #000000;
+                padding: 2px 0;
+                border-radius: 2px;
+                box-shadow: 0 0 2px rgba(0,0,0,0.3);
+                animation: pulse 1.5s infinite;
+                transition: background-color 0.5s ease, box-shadow 0.5s ease;
+            }
+            
+            @keyframes pulse {
+                0% { box-shadow: 0 0 0 0 rgba(255, 255, 0, 0.7); }
+                70% { box-shadow: 0 0 0 5px rgba(255, 255, 0, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(255, 255, 0, 0); }
+            }
+        `;
+        document.head.appendChild(style);
         // 点击页面其他部分关闭搜索结果
         document.addEventListener('click', (e) => {
             if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
@@ -2352,6 +2789,67 @@
 
         // 监听哈希变化
         window.addEventListener('hashchange', loadFromHash);
+    </script>
+    <!-- 添加到 </body> 标签前 -->
+    <div class="fullscreen-overlay" id="image-overlay">
+        <div class="fullscreen-close" onclick="closeFullscreen()">×</div>
+        <img id="fullscreen-image" src="" alt="">
+    </div>
+
+    <script>
+        // 为所有图片容器添加放大功能
+        document.addEventListener('DOMContentLoaded', function () {
+            const imgContainers = document.querySelectorAll('.img-container');
+
+            imgContainers.forEach(container => {
+                // 添加提示文字
+                const zoomHint = document.createElement('span');
+                zoomHint.className = 'zoom-hint';
+                zoomHint.textContent = '点击放大';
+                container.appendChild(zoomHint);
+
+                // 添加点击事件
+                container.addEventListener('click', function () {
+                    const img = this.querySelector('img');
+                    if (img) {
+                        openFullscreen(img.src, img.alt);
+                    }
+                });
+            });
+        });
+
+        // 打开全屏查看
+        function openFullscreen(src, alt) {
+            const overlay = document.getElementById('image-overlay');
+            const fullImg = document.getElementById('fullscreen-image');
+
+            fullImg.src = src;
+            fullImg.alt = alt || '';
+
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+        }
+
+        // 关闭全屏查看
+        function closeFullscreen() {
+            const overlay = document.getElementById('image-overlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = ''; // 恢复滚动
+        }
+
+        // 点击图片外区域也可关闭
+        document.getElementById('image-overlay').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeFullscreen();
+            }
+        });
+
+        // ESC键关闭
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeFullscreen();
+            }
+        });
     </script>
 </body>
 
